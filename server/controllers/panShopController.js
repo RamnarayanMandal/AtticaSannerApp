@@ -1,15 +1,15 @@
 const asyncHandler = require("express-async-handler");
 const axios = require('axios');
-const PanShopOwner = require("../models/PanShopOwner");
+const PanShopOwner = require("../models/panShopModel");
 const fs = require('fs');
 
 const qrcode = require('qrcode');
 
 const createPanShopOwner = asyncHandler(async (req, res) => {
-    const { panShopOwner, phoneNumber, address, latitude, longitude } = req.body;
+    const { panShopOwner, phoneNumber, address, latitude, longitude ,city ,state ,pincode } = req.body;
 
-    if (!panShopOwner || !phoneNumber || !address || !latitude || !longitude) {
-        return res.status(400).json({ error: "panShopOwner, phoneNumber, address, latitude, and longitude are mandatory fields" });
+    if (!panShopOwner || !phoneNumber || !address || !latitude || !longitude || !city ||!state ||!pincode ) {
+        return res.status(400).json({ error: "panShopOwner, phoneNumber, address, latitude,city ,state ,pincode  and longitude are mandatory fields" });
     }
 
     try {
@@ -18,14 +18,20 @@ const createPanShopOwner = asyncHandler(async (req, res) => {
             panShopOwner,
             phoneNumber,
             address,
+            state,
+            city,
+            pincode,
             latitude,
             longitude,
             user_id: req.userExecutive.id // Make sure this is correct
         });
 
 
-        const qrData = JSON.stringify(owner);
-
+        const qrData = JSON.stringify({
+            panShopOwner: owner.panShopOwner,
+            phoneNumber: owner.phoneNumber,
+            address: owner.address
+        });
         // Generate and store the QR code
         const qrImageFilePath = `qr_${owner._id}.png`; // File path for the QR code image
         await qrcode.toFile(qrImageFilePath, qrData);
@@ -75,6 +81,22 @@ const updatePanShoperOwner = asyncHandler(async(req,res) => {
             req.body,
             { new: true }
         );
+        const qrData = JSON.stringify({
+            panShopOwner: updatedOwner.panShopOwner,
+            phoneNumber: updatedOwner.phoneNumber,
+            address: updatedOwner.address
+        });
+        const qrImageFilePath = `qr_${owner._id}.png`;
+        await qrcode.toFile(qrImageFilePath, qrData);
+        const qrImageData = fs.readFileSync(qrImageFilePath);
+        fs.unlinkSync(qrImageFilePath);
+
+        // Update the pan shop owner with the new QR code
+        updatedOwner.qrCodeImage = {
+            data: qrImageData,
+            contentType: 'image'
+        };
+        await updatedOwner.save();
 
         // Return the updated pan shop owner
         res.status(200).json(updatedOwner);

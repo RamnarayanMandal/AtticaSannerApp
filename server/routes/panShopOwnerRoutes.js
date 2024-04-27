@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const { createPanShopOwner, getAllPanShopOwner, getPanShopOwnerById, updatePanShoperOwner, deletePanShopOwner } = require("../controllers/panShopOwnerController");
+const { createPanShopOwner, getAllPanShopOwner, getPanShopOwnerById, updatePanShoperOwner, deletePanShopOwner } = require("../controllers/panShopController");
 
 const executiveValidateToken = require("../middleware/executiveValidateTokenHandler");
 
