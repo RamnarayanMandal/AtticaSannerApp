@@ -14,13 +14,13 @@ const panShopSchema = new mongoose.Schema({
     },
     phoneNumber: {
       type: Number,
-      required: true,
-      unique:true
+      required: true
     },
     address: {
       type: String,
       required: true
     },
+   
     // Add fields for storing latitude and longitude
     latitude: {
       type: Number,
