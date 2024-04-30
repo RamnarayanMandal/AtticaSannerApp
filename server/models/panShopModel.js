@@ -14,7 +14,8 @@ const panShopSchema = new mongoose.Schema({
     },
     phoneNumber: {
       type: Number,
-      required: true
+      required: true,
+      unique: true
     },
     address: {
       type: String,
