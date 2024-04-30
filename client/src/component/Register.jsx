@@ -48,12 +48,20 @@ export default function Register() {
       if (error.response && error.response.status === 401) {
         setError('Unauthorized: User is not authorized. Please login again.');
       } else {
-        setError('An error occurred while submitting the form.');
+        setError('Invalid Phone Number.');
       }
     }
   };
   
-  
+  const handleCancel = () => {
+    setFormData({
+      panShopOwner: '',
+      phoneNumber: '',
+      address: '',
+      latitude: 0,
+      longitude: 0,
+    });
+  };
 
   const  getCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -138,6 +146,7 @@ export default function Register() {
               </button>
               <button
                 type="button"
+                onClick={handleCancel}
                 className="rounded-xl bg-red-600 px-10 py-3 text-md font-bold text-white shadow-md shadow-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Cancel

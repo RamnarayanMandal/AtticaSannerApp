@@ -4,14 +4,20 @@ const PanShopOwner = require("../models/panShopModel");
 const fs = require('fs');
 
 const qrcode = require('qrcode');
+function validatePhoneNumber(phoneNumber) {
+    var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    return phoneno.test(phoneNumber);
+}
 
 const createPanShopOwner = asyncHandler(async (req, res) => {
-    const { panShopOwner, phoneNumber, address, latitude, longitude ,city ,state ,pincode } = req.body;
+    const { panShopOwner, phoneNumber, address, latitude, longitude} = req.body;
 
     if (!panShopOwner || !phoneNumber || !address || !latitude || !longitude ) {
         return res.status(400).json({ error: "panShopOwner, phoneNumber, address, latitude longitude are mandatory fields" });
     }
-
+    if (!validatePhoneNumber(phoneNumber)) {
+        return res.status(400).json({ error: "Invalid phone number format" });
+    }
     try {
         // Create the pan shop owner 
         const owner = await PanShopOwner.create({
@@ -70,7 +76,9 @@ const updatePanShoperOwner = asyncHandler(async(req,res) => {
             res.status(403);
             return res.json({ error: "User doesn't have permission to update other user's pan shop owners" });
         }
-
+        if (!validatePhoneNumber(req.body.phoneNumber)) {
+            return res.status(400).json({ error: "Invalid phone number format" });
+        }
         // Update the pan shop owner with the provided data
         const owner = await PanShopOwner.findByIdAndUpdate(
             req.params.id,
