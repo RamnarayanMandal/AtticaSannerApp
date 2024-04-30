@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 
-const executiveValidateToken = asyncHandler(async (req, res, next) => {
+const superStockistValidateToken = asyncHandler(async (req, res, next) => {
     let token;
     const authHeader = req.headers.authorization;
 
@@ -25,4 +25,4 @@ const executiveValidateToken = asyncHandler(async (req, res, next) => {
     }
 });
 
-module.exports = executiveValidateToken;
+module.exports = superStockistValidateToken;

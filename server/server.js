@@ -18,12 +18,23 @@ const port = process.env.PORT || 5000;
 app.use(express.json())
 app.use("/api/contacts", require("./routes/contactRouters"));
 app.use("/api/administrators", require("./routes/administratorRoutes"));
-app.use("/api/panshopadmin", require("./routes/panShopexecutiveRoutes"));
+app.use("/api/panshopadmin", require("./routes/panShopadminRoutes"));
 app.use("/api/forgetPassword", require("./routes/authRoutes"));
 app.use("/api/resetPassword", require("./routes/authRoutes"));
 
 
 app.use("/api/panShopOwner", require("./routes/panShopOwnerRoutes"));
+
+
+// SuperStockist Signup
+
+app.use("/api/superstockist", require("./routes/superStockistSignupRoutes"));
+app.use("/api/superStockistDetails", require("./routes/superStockistDetailsRoutes"));
+app.use("/api/superStockistProductDetails", require("./routes/superStockistProductDetailsRoutes"));
+
+
+
+
 
 
 

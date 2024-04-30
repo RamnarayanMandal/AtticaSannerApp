@@ -1,6 +1,6 @@
 const express = require ("express");
 const router = express.Router();
-const {registerUser,loginUser,currentUser}= require("../controllers/panShopexecutiveController");
+const {registerUser,loginUser,currentUser}= require("../controllers/panShopadminController");
 const executiveValidateToken = require("../middleware/executiveValidateTokenHandler");
 
 
